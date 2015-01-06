@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var app = express();
 
 // Connect to the beerlocker MongoDB
-mongoose.connect('mongodb://localhost:27107/beerlocker');
+mongoose.connect('mongodb://localhost:27017/beerlocker');
 
 // Use environment defined port or 3000
 var port = process.env.PORT || 3000;
