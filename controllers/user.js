@@ -1,10 +1,10 @@
 /* User Controller */
 
 // Load required packages
-var user = require('../models/user');
+var User = require('../models/user');
 
 // Create endpoint /api/users for POST
-export.postUsers = function(req, res) {
+exports.postUsers = function(req, res) {
   var user = new User({
       username : req.body.username,
       password : req.body.password
@@ -20,7 +20,7 @@ export.postUsers = function(req, res) {
 
 // Create endpoint /api/users for GET
 exports.getUsers = function(req, res) {
-  User.find(function(req, res) {
+  User.find(function(err, users) {
     if(err)
       res.send(err);
 
