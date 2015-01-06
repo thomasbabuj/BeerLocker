@@ -1,12 +1,18 @@
 // Including our project related packages
 var express = require('express');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 // Including the Model
 var Beer = require('./models/beer');
 
 // Create our express application
 var app = express();
+
+// Use the body-parser package in our application
+app.use(bodyParser.urlencoded({
+  extended : true
+}));
 
 // Connect to the beerlocker MongoDB
 mongoose.connect('mongodb://localhost:27017/beerlocker');
