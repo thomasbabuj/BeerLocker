@@ -97,6 +97,17 @@ beerRoute.put(function(req, res){
     });
 });
 
+// Create endpoint /api/beers/:beer_id for DELETE
+beerRoute.delete(function(req, res){
+    // Use the Beer model to find a specific beer and remove it
+    Beer.findByIdAndRemove(req.params.beer_id, function(err, beer) {
+        if (err)
+            res.send(err);
+
+        res.json({ message : 'Beer removed from the locker!'});
+    });
+});
+
 // Register all our routes with /api
 app.use('/api', router);
 
