@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 // Including the Beer Controller
 var beerController = require('./controllers/beer');
+var userController = require('./controllers/user');
 
 // Create our express application
 var app = express();
@@ -33,6 +34,9 @@ router.route('/beers/:beer_id')
     .put(beerController.putBeer)
     .delete(beerController.deleteBeer);
 
+router.route('/users')
+    .post(userController.postUsers)
+    .get(userController.getUsers);
 
 // Register all our routes with /api
 app.use('/api', router);
