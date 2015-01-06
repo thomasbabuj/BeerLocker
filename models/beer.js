@@ -1,6 +1,6 @@
 /* Beer Model file */
 // Load required packages
-var mongosse = require('mongose');
+var mongoose = require('mongoose');
 
 // Define our beer schema
 var BeerSchema = new mongoose.Schema({

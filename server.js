@@ -2,6 +2,9 @@
 var express = require('express');
 var mongoose = require('mongoose');
 
+// Including the Model
+var Beer = require('./models/beer');
+
 // Create our express application
 var app = express();
 
