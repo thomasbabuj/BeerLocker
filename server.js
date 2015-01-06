@@ -1,8 +1,12 @@
 // Including our project related packages
 var express = require('express');
+var mongoose = require('mongoose');
 
 // Create our express application
 var app = express();
+
+// Connect to the beerlocker MongoDB
+mongoose.connect('mongodb://localhost:27107/beerlocker');
 
 // Use environment defined port or 3000
 var port = process.env.PORT || 3000;
