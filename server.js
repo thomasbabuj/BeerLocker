@@ -2,10 +2,12 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var passport = require('passport');
 
 // Including the Beer Controller
 var beerController = require('./controllers/beer');
 var userController = require('./controllers/user');
+var authController = require('./controllers/auth');
 
 // Create our express application
 var app = express();
@@ -21,22 +23,25 @@ mongoose.connect('mongodb://localhost:27017/beerlocker');
 // Use environment defined port or 3000
 var port = process.env.PORT || 3000;
 
+// Use the passport package in our application
+app.use(passport.initialize());
+
 // Create our express router
 var router = express.Router();
 
 //Create endpoint handlebars for /beers
 router.route('/beers')
-    .post(beerController.postBeers)
-    .get(beerController.getBeers);
+    .post(authController.isAuthenticated, beerController.postBeers)
+    .get(authController.isAuthenticated, beerController.getBeers);
 
 router.route('/beers/:beer_id')
-    .get(beerController.getBeer)
-    .put(beerController.putBeer)
-    .delete(beerController.deleteBeer);
+    .get(authController.isAuthenticated, beerController.getBeer)
+    .put(authController.isAuthenticated, beerController.putBeer)
+    .delete(authController.isAuthenticated, beerController.deleteBeer);
 
 router.route('/users')
     .post(userController.postUsers)
-    .get(userController.getUsers);
+    .get(authController.isAuthenticated,userController.getUsers);
 
 // Register all our routes with /api
 app.use('/api', router);
