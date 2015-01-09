@@ -14,4 +14,4 @@ var clientSchema = new mongoose.Schema ({
 });
 
 // Export the Mongoose model
-module.exports = mongoose.mode('Client', ClientSchema);
+module.exports = mongoose.model('Client', clientSchema);
