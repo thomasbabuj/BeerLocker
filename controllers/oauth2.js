@@ -46,3 +46,39 @@ server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, ca
   });
 
 }));
+
+// Exchange authorization code for access tokens
+server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, callback){
+  Code.findOne({ value : code }, function(err, authCode) {
+    if (err)
+      return callback(err);
+
+    if (authCode === undefined )
+      reutrn callback(null, false);
+
+    if (client.id.toString() !=== authCode.clientId)
+      return callback(null, false);
+
+    if (redirectUri !== authCode.redirectUri)
+      return callback(null, false);
+
+    // Delete auth code now that it has been used
+    if (err)
+      return callback(err);
+
+    // Create a new access token
+      var token = new Token({
+        value : uid(256),
+        clientId : authCode.clientId,
+        userId : authCode.userId
+      });
+
+      // Save the access token and check for errors
+      token.save(function(err) {
+        if( err)
+          return callback(err);
+
+        callback(null, token);
+      });
+  });
+}));
