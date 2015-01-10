@@ -29,5 +29,20 @@ server.deserializeClient(function(id, callback) {
 
 // Register authorization code grant type
 server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, callback){
-  //
+  // Create a new authorization code
+  var code = new Code({
+    value : uid(16),
+    clientId : client._id,
+    redirectUri : redirectUri,
+    userId : user._id
+  });
+
+  // Save the auth code and check for errors
+  code.save(function(err) {
+    if (err)
+      return callback(err);
+
+    callback(null, code.value);
+  });
+
 }));
