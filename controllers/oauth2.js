@@ -82,3 +82,21 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
       });
   });
 }));
+
+
+// User authorization endpoint
+// Its initialize a new authorization transaction.
+exports.authorization = [
+  server.authorization(function(clientId, redirectUri, callback) {
+
+    Client.findOne({ id : clientId }, function(err, client) {
+      if (err)
+        return callback(err);
+
+      return callback(null, client, redirectUri);
+    });
+  }),
+  function (req, res) {
+    res.render('dialog', { transcationID: req.oauth2.transcationID, user : req.user, client : req.oauth2.client });
+  }
+];
