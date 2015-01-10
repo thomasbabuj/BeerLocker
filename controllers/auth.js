@@ -5,7 +5,7 @@ Auth Controller to manage authentication
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
 var User = require('../models/user.js');
-var BearerStrategy = require('password-http-bearer').Strategy;
+var BearerStrategy = require('passport-http-bearer').Strategy;
 var Token = require('../models/token');
 
 passport.use(new BasicStrategy(
@@ -45,7 +45,7 @@ passport.use(new BearerStrategy(
       if(!token)
         return callback(null, false);
 
-      User.findOne({ _id { token.userId }, function(err, user) {
+      User.findOne({ _id : token.userId }, function(err, user) {
         if( err )
           return callback(err);
 
@@ -60,5 +60,26 @@ passport.use(new BearerStrategy(
   }
 ));
 
+// Authenticating the client using Passport BasicStrategy
+passport.use('client-basic', new BasicStrategy(
+  function(username, password, callback)
+  {
+    Client.findOne( { id : username }, function(err, client) {
+      if(err)
+        return callback(err);
+
+      // No client found with that id or bad password
+      if(!client || client.secret !== password)
+        return callback(null, false);
+
+      // Success
+      return callback(null, client);
+    });
+  }
+));
+
+
+
 exports.isAuthenticated = passport.authenticate('basic', { session : false} );
 exports.isBearerAuthenticated = passport.authenticate('bearer', { session : false });
+exports.isClientAuthenticated = passport.authenticate('client-basic', { session : false });
