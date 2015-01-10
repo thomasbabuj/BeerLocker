@@ -54,9 +54,9 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
       return callback(err);
 
     if (authCode === undefined )
-      reutrn callback(null, false);
+      return callback(null, false);
 
-    if (client.id.toString() !=== authCode.clientId)
+    if (client.id.toString() !== authCode.clientId)
       return callback(null, false);
 
     if (redirectUri !== authCode.redirectUri)
