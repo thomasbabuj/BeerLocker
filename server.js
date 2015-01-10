@@ -11,6 +11,7 @@ var beerController = require('./controllers/beer');
 var userController = require('./controllers/user');
 var authController = require('./controllers/auth');
 var clientController = require('./controllers/client');
+var oauth2controller = require('./controllers/oauth2');
 
 // Create our express application
 var app = express();
@@ -59,6 +60,16 @@ router.route('/users')
 router.route('/clients')
     .post(authController.isAuthenticated, clientController.postClients)
     .get(authController.isAuthenticated, clientController.getClients);
+
+// Create endpoint handlers for oauth2 authorize
+router.route('/oauth2/authorize')
+    .post(authController.isAuthenticated, oauth2controller.decision)
+    .get(authController.isAuthenticated, oauth2controller.authorization);
+
+// Create endpoint handlers for oauth2 token
+router.route('/oauth2/token')
+    .post(authController.isAuthenticated, oauth2controller.token);
+
 
 // Register all our routes with /api
 app.use('/api', router);
