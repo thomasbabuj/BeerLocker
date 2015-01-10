@@ -100,3 +100,31 @@ exports.authorization = [
     res.render('dialog', { transcationID: req.oauth2.transcationID, user : req.user, client : req.oauth2.client });
   }
 ];
+
+// User decision endpoint
+exports.decision = [
+  server.decision()
+];
+
+// Application client token exchange endpoint
+exports.token = [
+  server.token(),
+  server.errorHandler()
+];
+
+// Utility function to generate unique identifiers
+function uid (len) {
+  var buf = []
+    , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    , charlen = chars.length;
+
+  for (var i = 0; i < len; ++i) {
+    buf.push(chars[getRandomInt(0, charlen - 1)]);
+  }
+
+  return buf.join('');
+};
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
